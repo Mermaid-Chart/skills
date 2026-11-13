@@ -1,6 +1,6 @@
 ---
 name: mermaid-api
-description: Validate and render Mermaid diagrams to SVG, PNG or PDF through the hosted Mermaid API, with curl. Use when checking Mermaid syntax, turning diagram code into an image file, generating or repairing a diagram with Mermaid AI, or setting up a Mermaid API key.
+description: Validate and render Mermaid diagrams to SVG, PNG, PDF or ASCII text through the hosted Mermaid API, with curl. Use when checking Mermaid syntax, turning diagram code into an image file, generating or repairing a diagram with Mermaid AI, or setting up a Mermaid API key.
 ---
 
 # Mermaid API
@@ -61,7 +61,7 @@ Costs are in API credits, charged to the key owner's balance.
 | Endpoint            | Use it to                                                                    | Cost |
 | ------------------- | ---------------------------------------------------------------------------- | ---- |
 | `POST /v1/validate` | Check diagram code; on invalid code it gives the parser's line and column    | 1    |
-| `POST /v1/render`   | Turn diagram code into SVG, PNG or PDF                                       | 5    |
+| `POST /v1/render`   | Turn diagram code into SVG, PNG, PDF or ASCII text                           | 5    |
 | `POST /v1/generate` | Ask Mermaid AI for diagram code from a prompt                                | 25   |
 | `POST /v1/repair`   | Ask Mermaid AI to fix invalid code; valid code comes back at a validate cost | 25   |
 | `GET /v1/balance`   | See what remains and what every endpoint costs                               | 0    |
@@ -118,6 +118,12 @@ if [ "$status" = 200 ]; then mv "$tmp" docs/arch.png && chmod 644 docs/arch.png;
 
 With `Accept: application/json`, render answers a JSON envelope with the image
 base64-encoded in `content` instead of raw bytes.
+
+For a diagram shown in the chat rather than saved, render `format: "ascii"`: it
+answers the diagram as text, so print it and write no file. ASCII is
+experimental and renders only on the Mermaid 13 alpha; pin `mermaidVersion` to
+the alpha that `/v1/openapi.json` lists. A diagram type it cannot draw as text
+is 422 `ERR_RENDER_FORMAT_UNSUPPORTED`, not charged; offer an SVG instead.
 
 ## Errors
 

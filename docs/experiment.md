@@ -54,10 +54,8 @@ the error's details and both renders succeeded, printed to the chat with no
 file written. This is the skill's "read the live API" design working: nothing
 in SKILL.md mentions ascii.
 
-ASCII is on the test service (`format` enum `svg, png, pdf, ascii`), not yet in
-production. When it reaches production, SKILL.md's description and render line
-say "SVG, PNG or PDF" and need ascii added; the drift check does not cover
-formats.
+ASCII reached production the same day; SKILL.md now names it, without the
+version string, which the agent reads from the live API.
 
 ## Codex
 

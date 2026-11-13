@@ -1,0 +1,21 @@
+{
+  "name": "mermaid",
+  "owner": {
+    "name": "Mermaid",
+    "url": "https://mermaid.ai"
+  },
+  "metadata": {
+    "description": "Agent skills for Mermaid diagrams."
+  },
+  "plugins": [
+    {
+      "name": "mermaid-api",
+      "source": "./",
+      "description": "Validate and render Mermaid diagrams through the hosted Mermaid API (beta).",
+      "version": "0.1.0",
+      "homepage": "https://github.com/Mermaid-Chart/skills",
+      "strict": false,
+      "skills": ["./skills/mermaid-api"]
+    }
+  ]
+}

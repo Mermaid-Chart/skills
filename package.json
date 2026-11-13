@@ -1,0 +1,12 @@
+{
+  "name": "mermaid-skills",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test",
+    "drift": "node scripts/drift.mjs"
+  }
+}

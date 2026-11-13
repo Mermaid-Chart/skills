@@ -91,10 +91,12 @@ publishing, and decides whether a CLI is needed after all.
   their own terminal, not through the agent:
 
   ```bash
-  mkdir -p ~/.config/mermaid-api && (umask 077; read -rsp 'Mermaid API key: ' k && printf 'Authorization: Bearer %s\n' "$k" > ~/.config/mermaid-api/credentials)
+  mkdir -p ~/.config/mermaid-api && (umask 077; printf 'Mermaid API key: '; read -rs k && printf 'Authorization: Bearer %s\n' "$k" > ~/.config/mermaid-api/credentials; echo)
   ```
 
-  The agent then checks with `GET /v1/balance`.
+  It works in bash and zsh; `read -p` would fail in zsh, macOS's default
+  shell, where `-p` reads from a coprocess. The agent then checks with
+  `GET /v1/balance`.
 
 - A device-flow login (agent starts it, user approves in the browser, key
   written for them) is the main candidate for a later CLI. It needs new API and

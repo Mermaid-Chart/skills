@@ -106,6 +106,6 @@ Contract checks: `npm test` first reproduced both path-template truncation and
 ignored v2 cost claims, then passed all nine tests after the parser fix.
 `npm run drift` passed against production OpenAPI with the expanded table;
 the stored-diagram and generation guidance was also read against the live
-operation descriptions and schemas. Skill Creator's `quick_validate.py` was
-attempted but could not run because this Python installation lacks PyYAML;
-no dependency was added for it.
+operation descriptions and schemas. Skill Creator's `quick_validate.py` passed
+in an isolated temporary Python environment with PyYAML; no project dependency
+was added.

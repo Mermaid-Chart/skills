@@ -11,7 +11,7 @@
     {
       "name": "mermaid-api",
       "source": "./",
-      "description": "Validate and render Mermaid diagrams through the hosted Mermaid API (beta).",
+      "description": "Validate and render (including ASCII), generate or repair Mermaid diagrams, and list, store, fetch, update or share Mermaid Chart diagrams through Mermaid API (beta).",
       "version": "0.1.0",
       "homepage": "https://github.com/Mermaid-Chart/skills",
       "strict": false,

@@ -60,3 +60,52 @@ version string, which the agent reads from the live API.
 ## Codex
 
 Not run.
+
+## Stored-diagram extension: Codex, 2026-11-16
+
+Offline behavioral run for [issue 2](https://github.com/Mermaid-Chart/skills/issues/2),
+using `codex exec --ignore-user-config --ephemeral` with a copy of the expanded
+skill and a public OpenAPI snapshot. A synthetic Python request transport in
+`/tmp/skills2-eval` replaced curl; no real key, network operation, API credit,
+production diagram or invitation was used. This tests route selection and
+uncertain-write handling, not live authentication or curl quoting.
+
+Task: in the Architecture project, update the existing Checkout diagram by
+adding Receipt after Payment, retain its title, and request a View invitation.
+No local output was requested. The fixture supplied one project and one diagram,
+accepted the update, then simulated a lost response to the share request.
+
+Observed requests, in order (all IDs synthetic):
+
+```text
+GET  /v1/projects
+GET  /v1/projects/p1/diagrams
+GET  /v1/diagrams/d1
+PUT  /v1/diagrams/d1          {code: existing code plus Receipt}
+POST /v1/diagrams/d1/share    {access: View}
+GET  /v1/diagrams/d1
+GET  /v1/errors.json
+```
+
+**Pass for the exercised decisions:** selected the intended ID, fetched before
+editing, omitted the unchanged title, sent no extra paid validation, and made
+one invitation attempt. On the uncertain share outcome it tried available reads
+and stopped without another write or claiming to have a share URL. The agent
+created no local output. The final response identified both the uncertain
+invitation and a fixture inconsistency: the stateless read returned version v1
+after the accepted update returned v2. Persistence is therefore not proven by
+this fixture. The fixture lacked the errors reference response too; the agent
+reported no invented error meaning.
+
+The earlier live Claude tasks and full live Codex experiment remain incomplete;
+this offline run does not replace them. Creation, successful sharing, credential
+handling, concurrent updates and render-only routing were not exercised here.
+No transcript containing credentials or real invitation URLs was produced.
+
+Contract checks: `npm test` first reproduced both path-template truncation and
+ignored v2 cost claims, then passed all nine tests after the parser fix.
+`npm run drift` passed against production OpenAPI with the expanded table;
+the stored-diagram and generation guidance was also read against the live
+operation descriptions and schemas. Skill Creator's `quick_validate.py` was
+attempted but could not run because this Python installation lacks PyYAML;
+no dependency was added for it.

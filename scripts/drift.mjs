@@ -1,12 +1,13 @@
-// Drift check: every /v1 path SKILL.md names must exist in the API's OpenAPI
+// Drift check: every documented /v1 or /v2 path SKILL.md names must exist in the API's OpenAPI
 // document, and every cost it states must equal the operation's x-cost.
 
 import { readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 
 const COST_ROW =
-  /^\|\s*`(GET|POST|PUT|PATCH|DELETE) (\/v1\/[^`\s]+)`\s*\|.*\|\s*(\d+)\s*\|\s*$/;
-const MENTION = /(?:\b(GET|POST|PUT|PATCH|DELETE) )?(\/v1\/[\w./-]*[\w-])/g;
+  /^\|\s*`(GET|POST|PUT|PATCH|DELETE) (\/v[12]\/[^`\s]+)`\s*\|.*\|\s*(\d+)\s*\|\s*$/;
+const MENTION =
+  /(?:\b(GET|POST|PUT|PATCH|DELETE) )?(\/v[12]\/(?:[\w.-]+|\{[\w-]+\})(?:\/(?:[\w.-]+|\{[\w-]+\}))*)/g;
 
 /** The endpoints the skill names, in order, with the cost its table states. */
 export function namedEndpoints(md) {

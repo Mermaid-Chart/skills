@@ -135,19 +135,27 @@ is 422 `ERR_RENDER_FORMAT_UNSUPPORTED`, not charged; offer an SVG instead.
 ## Generate and repair
 
 Use `POST /v2/generate` for a list of diagrams: `diagramCount` defaults to 1,
-currently up to 5. It costs 25 credits per valid diagram delivered, capped at
-`diagramCount`; extra diagrams, discarded diagrams and `valid: false` are
-uncharged. The balance must cover the requested count before it starts.
-Optional `render` adds rendered results to each valid diagram, with base64
-content or a per-diagram render error. Each successful render adds the render
-cost (currently 5); a failed render adds nothing. Read the live schema for
-formats, options and response fields.
+currently up to 5. Without `render`, it costs 25 credits per valid diagram
+delivered, capped at `diagramCount`. Optional `render` adds base64 content or a
+per-diagram render error. With `render`, charge only successfully rendered
+diagrams: (AI cost + render cost) times the successful count, capped at
+`diagramCount`, currently 30 credits each. A diagram whose render failed is
+entirely uncharged, including its AI cost, even though its code is returned.
+Extra diagrams, discarded diagrams and `valid: false` are uncharged.
+
+Before the call starts, the balance must cover `diagramCount` times the AI
+cost plus, when requested, the render cost per diagram: currently 25 each
+without rendering or 30 each with rendering. For example, three requested
+renders need 90 available credits; two successes and one render failure cost 60. Read the live schema for formats, options and response fields.
 
 Repair with optional rendering uses `POST /v1/repair`. Valid input returns
 unchanged without asking Mermaid AI: it costs a validate without rendering,
-or a render when rendered. Repaired code with a successful render costs repair
-plus render. A failed render adds nothing. Read `valid` and each render result
-before treating the request as successful.
+or a render when successfully rendered. Repaired code with a successful render
+costs repair plus render. A failed render makes the entire repair request
+uncharged, including any AI work; its code is still returned. The balance must
+cover a repair plus the requested render before the call starts, even for
+already valid input. Read `valid` and each render result before treating the
+request as successful.
 
 ## Stored diagrams
 

@@ -109,3 +109,27 @@ the stored-diagram and generation guidance was also read against the live
 operation descriptions and schemas. Skill Creator's `quick_validate.py` passed
 in an isolated temporary Python environment with PyYAML; no project dependency
 was added.
+
+### Pricing comprehension after spec review
+
+The review caught ambiguous wording that implied a failed AI render retained
+its AI charge. Checked the shipped `origin/main` implementations in
+`src/generate-v2.ts` (`checkAll` counts successful renders when requested) and
+`src/repair.ts` (failed rendering returns `uncharged: true`), then corrected
+the skill. No matching incorrect claim appeared in README or the spec.
+
+A second offline `codex exec --ignore-user-config --ephemeral` run read only the
+updated skill and answered pricing scenarios, without transport or writes.
+All six numeric assertions passed against the shipped behavior:
+
+| Scenario                                             | Minimum balance | Final charge |
+| ---------------------------------------------------- | --------------- | ------------ |
+| Generate three with rendering; two render, one fails | 90              | 60           |
+| Generate three with rendering; all renders fail      | 90              | 0            |
+| Repair invalid code; requested render fails          | 30              | 0            |
+| Repair already valid code; requested render succeeds | 30              | 5            |
+
+Costs assumed the current AI 25, render 5 and validate 1. Generation without
+rendering still charges valid delivered diagrams, capped at the requested
+count. These behavioral assertions supplement drift, which checks endpoint
+base costs rather than prose pricing semantics.

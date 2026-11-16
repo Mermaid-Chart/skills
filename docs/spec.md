@@ -4,6 +4,19 @@ Spec produced from the design session of 2026-11-13. Vocabulary follows
 `GLOSSARY.md`. The skill lives outside this repo; this spec stays here until the
 skills repo exists, then moves there.
 
+## Approved extension, 2026-11-16
+
+[Issue 2](https://github.com/Mermaid-Chart/skills/issues/2) extends this existing
+skill with all six stored-diagram operations and `/v2/generate`, including
+optional rendered results and per-diagram charging. This explicitly expands the
+original `/v2` exclusion below. Live schemas remain canonical; calls stay plain
+curl, and the existing installation channels and ASCII guidance remain.
+
+The drift check now checks documented `/v1` and `/v2` paths, preserving path
+parameters. Stored writes follow explicit user intent; personal keys retain
+Chart permissions, updates are last-write-wins, and invitations default to View
+with 30-day validity. Behavioral evidence is in [`experiment.md`](experiment.md).
+
 ## Problem Statement
 
 Developers who work in a coding agent (Claude Code, Codex, Cursor and the like)

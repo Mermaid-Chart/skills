@@ -4,9 +4,9 @@ Agent skills for [Mermaid](https://mermaid.ai) diagrams, in the
 [Agent Skills](https://agentskills.io) format, for coding agents with a shell:
 Claude Code, Codex, Cursor and others. macOS, Linux and WSL.
 
-| Skill                                        | What it does                                                                                          |
-| -------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| [`mermaid-api`](skills/mermaid-api/SKILL.md) | Validate and render diagrams, and generate or repair them with Mermaid AI, through Mermaid API. Beta. |
+| Skill                                        | What it does                                                                                                                                                                    |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`mermaid-api`](skills/mermaid-api/SKILL.md) | Validate and render (including ASCII), generate one or several diagrams, repair code, and list, store, fetch, update or share Mermaid Chart diagrams through Mermaid API. Beta. |
 
 ## Install
 
@@ -41,6 +41,10 @@ outside any project:
 ```bash
 mkdir -p ~/.config/mermaid-api && (umask 077; printf 'Mermaid API key: '; read -rs k && printf 'Authorization: Bearer %s\n' "$k" > ~/.config/mermaid-api/credentials; echo)
 ```
+
+Stored-diagram workflows require a personal key and use its owner's existing
+Mermaid Chart permissions. Reads are free; writes and sharing are performed
+when requested. Detailed fields, costs and errors come from the live API.
 
 `MERMAID_API_KEY` in the environment takes precedence over the file.
 `MERMAID_API_URL` points the skill at another Mermaid API deployment.
